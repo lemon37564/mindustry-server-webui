@@ -403,3 +403,66 @@
 [12-22-2022 21:16:26] [I]   Veins: Default / 350x200
 [12-22-2022 21:16:26] [I]   Wasteland: Default / 300x300
 [12-22-2022 21:16:26] [I] Map directory: /home/lemtea/Dev/go/mindustry_wrapper/config/maps
+[12-22-2022 21:26:32] [I] Server loaded. Type 'help' for help.
+[12-22-2022 21:26:32] [I] Maps:
+[12-22-2022 21:26:32] [I]   Ancient_Caldera: Default / 256x256
+[12-22-2022 21:26:32] [I]   Archipelago: Default / 500x500
+[12-22-2022 21:26:32] [I]   Debris_Field: Default / 400x400
+[12-22-2022 21:26:32] [I]   Domain: Default / 494x494
+[12-22-2022 21:26:32] [I]   Fork: Default / 250x300
+[12-22-2022 21:26:32] [I]   Fortress: Default / 256x256
+[12-22-2022 21:26:32] [I]   Glacier: Default / 150x250
+[12-22-2022 21:26:32] [I]   Islands: Default / 256x256
+[12-22-2022 21:26:32] [I]   Labyrinth: Default / 200x200
+[12-22-2022 21:26:32] [I]   Maze: Default / 256x256
+[12-22-2022 21:26:32] [I]   Molten_Lake: Default / 400x400
+[12-22-2022 21:26:32] [I]   Mud_Flats: Default / 400x400
+[12-22-2022 21:26:32] [I]   Passage: Default / 500x120
+[12-22-2022 21:26:32] [I]   Shattered: Default / 350x350
+[12-22-2022 21:26:32] [I]   Tendrils: Default / 300x300
+[12-22-2022 21:26:32] [I]   Triad: Default / 200x200
+[12-22-2022 21:26:32] [I]   Veins: Default / 350x200
+[12-22-2022 21:26:32] [I]   Wasteland: Default / 300x300
+[12-22-2022 21:26:32] [I] Map directory: /home/lemtea/Dev/go/mindustry_wrapper/config/maps
+[12-22-2022 21:26:51] [I] Server loaded. Type 'help' for help.
+[12-22-2022 21:26:52] [I] Maps:
+[12-22-2022 21:26:52] [I]   Ancient_Caldera: Default / 256x256
+[12-22-2022 21:26:52] [I]   Archipelago: Default / 500x500
+[12-22-2022 21:26:52] [I]   Debris_Field: Default / 400x400
+[12-22-2022 21:26:52] [I]   Domain: Default / 494x494
+[12-22-2022 21:26:52] [I]   Fork: Default / 250x300
+[12-22-2022 21:26:52] [I]   Fortress: Default / 256x256
+[12-22-2022 21:26:52] [I]   Glacier: Default / 150x250
+[12-22-2022 21:26:52] [I]   Islands: Default / 256x256
+[12-22-2022 21:26:52] [I]   Labyrinth: Default / 200x200
+[12-22-2022 21:26:52] [I]   Maze: Default / 256x256
+[12-22-2022 21:26:52] [I]   Molten_Lake: Default / 400x400
+[12-22-2022 21:26:52] [I]   Mud_Flats: Default / 400x400
+[12-22-2022 21:26:52] [I]   Passage: Default / 500x120
+[12-22-2022 21:26:52] [I]   Shattered: Default / 350x350
+[12-22-2022 21:26:52] [I]   Tendrils: Default / 300x300
+[12-22-2022 21:26:52] [I]   Triad: Default / 200x200
+[12-22-2022 21:26:52] [I]   Veins: Default / 350x200
+[12-22-2022 21:26:52] [I]   Wasteland: Default / 300x300
+[12-22-2022 21:26:52] [I] Map directory: /home/lemtea/Dev/go/mindustry_wrapper/config/maps
+[12-22-2022 21:32:00] [I] Server loaded. Type 'help' for help.
+[12-22-2022 21:32:00] [I] Maps:
+[12-22-2022 21:32:00] [I]   Ancient_Caldera: Default / 256x256
+[12-22-2022 21:32:00] [I]   Archipelago: Default / 500x500
+[12-22-2022 21:32:00] [I]   Debris_Field: Default / 400x400
+[12-22-2022 21:32:00] [I]   Domain: Default / 494x494
+[12-22-2022 21:32:00] [I]   Fork: Default / 250x300
+[12-22-2022 21:32:00] [I]   Fortress: Default / 256x256
+[12-22-2022 21:32:00] [I]   Glacier: Default / 150x250
+[12-22-2022 21:32:00] [I]   Islands: Default / 256x256
+[12-22-2022 21:32:00] [I]   Labyrinth: Default / 200x200
+[12-22-2022 21:32:00] [I]   Maze: Default / 256x256
+[12-22-2022 21:32:00] [I]   Molten_Lake: Default / 400x400
+[12-22-2022 21:32:00] [I]   Mud_Flats: Default / 400x400
+[12-22-2022 21:32:00] [I]   Passage: Default / 500x120
+[12-22-2022 21:32:00] [I]   Shattered: Default / 350x350
+[12-22-2022 21:32:00] [I]   Tendrils: Default / 300x300
+[12-22-2022 21:32:00] [I]   Triad: Default / 200x200
+[12-22-2022 21:32:00] [I]   Veins: Default / 350x200
+[12-22-2022 21:32:00] [I]   Wasteland: Default / 300x300
+[12-22-2022 21:32:00] [I] Map directory: /home/lemtea/Dev/go/mindustry_wrapper/config/maps

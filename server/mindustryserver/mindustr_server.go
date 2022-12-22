@@ -7,11 +7,12 @@ import (
 )
 
 type MindustryServer struct {
-	cmd     *exec.Cmd
-	started bool
-	inPipe  io.WriteCloser
-	outPipe io.ReadCloser
-	reader  *bufio.Reader
+	cmd          *exec.Cmd
+	started      bool
+	inPipe       io.WriteCloser
+	outPipe      io.ReadCloser
+	scanner      *bufio.Scanner
+	outputBuffer []byte
 }
 
 func NewMindustryServer() MindustryServer {
@@ -21,6 +22,7 @@ func NewMindustryServer() MindustryServer {
 	server.started = false
 	server.inPipe, _ = server.cmd.StdinPipe()
 	server.outPipe, _ = server.cmd.StdoutPipe()
+	server.outputBuffer = make([]byte, 0)
 	return server
 }
 
@@ -33,19 +35,27 @@ func (server *MindustryServer) Start() {
 		panic(err)
 	}
 
-	server.reader = bufio.NewReader(server.outPipe)
+	server.scanner = bufio.NewScanner(server.outPipe)
 	server.started = true
+
+	// Get output as much as possible
+	go func() {
+		for server.scanner.Scan() {
+			server.outputBuffer = append(server.outputBuffer, server.scanner.Bytes()...)
+			server.outputBuffer = append(server.outputBuffer, '\n')
+		}
+	}()
 }
 
-func (server MindustryServer) SendCommand(command string) (err error) {
+func (server *MindustryServer) SendCommand(command string) (err error) {
+	// clear output buffer
+	server.outputBuffer = make([]byte, 0)
 	_, err = server.inPipe.Write([]byte(command + "\n"))
 	return err
 }
 
-func (server MindustryServer) GetOutput() (output []byte, err error) {
-	output = make([]byte, 4096)
-	_, err = server.reader.Read(output)
-	return output, err
+func (server MindustryServer) GetOutput() (output []byte) {
+	return server.outputBuffer
 }
 
 func (server MindustryServer) Shutdown() (err error) {

@@ -29,20 +29,14 @@ func Serve() {
 		if err != nil {
 			return err
 		}
-		output, err := mindustryServer.GetOutput()
-		if err != nil {
-			return err
-		}
+		output := mindustryServer.GetOutput()
 		c.JSON(output)
 		fmt.Println(string(output))
 		// c.Write(output)
 		return nil
 	})
 	app.Get("/api/get/commandline_output", func(c *fiber.Ctx) error {
-		output, err := mindustryServer.GetOutput()
-		if err != nil {
-			return err
-		}
+		output := mindustryServer.GetOutput()
 		fmt.Println(string(output))
 		return c.Send(output)
 	})
