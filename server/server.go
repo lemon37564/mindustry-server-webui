@@ -1,6 +1,7 @@
 package server
 
 import (
+	"fmt"
 	"log"
 	"mindserver/server/mindustryserver"
 	"net/http"
@@ -41,6 +42,7 @@ func Serve() {
 	app.Get("/api/get/commandline_output", func(c *fiber.Ctx) error {
 		if mindustryServer.IsOutputUpdated() {
 			output := mindustryServer.GetOutput()
+			fmt.Println(string(output))
 			return c.SendString(string(output))
 		}
 		// the result is not changed, use the cached result

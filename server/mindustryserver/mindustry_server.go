@@ -4,7 +4,11 @@ import (
 	"bufio"
 	"io"
 	"os/exec"
+	"regexp"
 )
+
+// something like \033[101m    , use this to delete all the color code to make it plain text
+var colorCodeReplace = regexp.MustCompile("\033" + regexp.QuoteMeta("[") + "[0-9]+m")
 
 type MindustryServer struct {
 	cmd           *exec.Cmd
@@ -60,6 +64,13 @@ func (server *MindustryServer) SendCommand(command string) (err error) {
 }
 
 func (server *MindustryServer) GetOutput() (output []byte) {
+	server.outputChanged = false
+	// replace color code in terminal
+	out := colorCodeReplace.ReplaceAll(server.outputBuffer, []byte(""))
+	return out
+}
+
+func (server *MindustryServer) GetRawOutput() (output []byte) {
 	server.outputChanged = false
 	return server.outputBuffer
 }

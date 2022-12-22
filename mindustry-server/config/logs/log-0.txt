@@ -8,3 +8,131 @@
 [12-22-2022 21:36:22] [I] Stopped server.
 [12-22-2022 21:36:23] [I] Stopped server.
 [12-22-2022 21:36:24] [I] Shutting down server.
+[12-22-2022 22:53:29] [I] Server loaded. Type 'help' for help.
+[12-22-2022 22:53:50] [I] Commands:
+[12-22-2022 22:53:50] [I]    help [command] - Display the command list, or get help for a specific command.
+[12-22-2022 22:53:50] [I]    version - Displays server version info.
+[12-22-2022 22:53:50] [I]    exit - Exit the server application.
+[12-22-2022 22:53:50] [I]    stop - Stop hosting the server.
+[12-22-2022 22:53:50] [I]    host [mapname] [mode] - Open the server. Will default to survival and a random map if not specified.
+[12-22-2022 22:53:50] [I]    maps [all/custom/default] - Display available maps. Displays only custom maps by default.
+[12-22-2022 22:53:50] [I]    reloadmaps - Reload all maps from disk.
+[12-22-2022 22:53:50] [I]    status - Display server status.
+[12-22-2022 22:53:50] [I]    mods - Display all loaded mods.
+[12-22-2022 22:53:50] [I]    mod <name...> - Display information about a loaded plugin.
+[12-22-2022 22:53:50] [I]    js <script...> - Run arbitrary Javascript.
+[12-22-2022 22:53:50] [I]    say <message...> - Send a message to all players.
+[12-22-2022 22:53:50] [I]    pause <on/off> - Pause or unpause the game.
+[12-22-2022 22:53:50] [I]    rules [remove/add] [name] [value...] - List, remove or add global rules. These will apply regardless of map.
+[12-22-2022 22:53:50] [I]    fillitems [team] - Fill the core with items.
+[12-22-2022 22:53:50] [I]    playerlimit [off/somenumber] - Set the server player limit.
+[12-22-2022 22:53:50] [I]    config [name] [value...] - Configure server settings.
+[12-22-2022 22:53:50] [I]    subnet-ban [add/remove] [address] - Ban a subnet. This simply rejects all connections with IPs starting with some string.
+[12-22-2022 22:53:50] [I]    whitelist [add/remove] [ID] - Add/remove players from the whitelist using their ID.
+[12-22-2022 22:53:50] [I]    shuffle [none/all/custom/builtin] - Set map shuffling mode.
+[12-22-2022 22:53:50] [I]    nextmap <mapname...> - Set the next map to be played after a game-over. Overrides shuffling.
+[12-22-2022 22:53:50] [I]    kick <username...> - Kick a person by name.
+[12-22-2022 22:53:50] [I]    ban <type-id/name/ip> <username/IP/ID...> - Ban a person.
+[12-22-2022 22:53:50] [I]    bans - List all banned IPs and IDs.
+[12-22-2022 22:53:50] [I]    unban <ip/ID> - Completely unban a person by IP or ID.
+[12-22-2022 22:53:50] [I]    pardon <ID> - Pardons a votekicked player by ID and allows them to join again.
+[12-22-2022 22:53:50] [I]    admin <add/remove> <username/ID...> - Make an online user admin
+[12-22-2022 22:53:50] [I]    admins - List all admins.
+[12-22-2022 22:53:50] [I]    players - List all players currently in game.
+[12-22-2022 22:53:50] [I]    runwave - Trigger the next wave.
+[12-22-2022 22:53:50] [I]    load <slot> - Load a save from a slot.
+[12-22-2022 22:53:50] [I]    save <slot> - Save game state to a slot.
+[12-22-2022 22:53:50] [I]    saves - List all saves in the save directory.
+[12-22-2022 22:53:50] [I]    gameover - Force a game over.
+[12-22-2022 22:53:50] [I]    info <IP/UUID/name...> - Find player info(s). Can optionally check for all names or IPs a player has had.
+[12-22-2022 22:53:50] [I]    search <name...> - Search players who have used part of a name.
+[12-22-2022 22:53:50] [I]    gc - Trigger a garbage collection. Testing only.
+[12-22-2022 22:53:50] [I]    yes - Run the last suggested incorrect command.
+[12-22-2022 22:54:11] [I] All config values:
+[12-22-2022 22:54:11] [I] | name: Server
+[12-22-2022 22:54:11] [I] | | The server name as displayed on clients.
+[12-22-2022 22:54:11] [I] |
+[12-22-2022 22:54:11] [I] | desc: off
+[12-22-2022 22:54:11] [I] | | The server description, displayed under the name. Max 100 characters.
+[12-22-2022 22:54:11] [I] |
+[12-22-2022 22:54:11] [I] | port: 6567
+[12-22-2022 22:54:11] [I] | | The port to host on.
+[12-22-2022 22:54:11] [I] |
+[12-22-2022 22:54:11] [I] | autoUpdate: false
+[12-22-2022 22:54:11] [I] | | Whether to auto-update and exit when a new bleeding-edge update arrives.
+[12-22-2022 22:54:11] [I] |
+[12-22-2022 22:54:11] [I] | showConnectMessages: true
+[12-22-2022 22:54:11] [I] | | Whether to display connect/disconnect messages.
+[12-22-2022 22:54:11] [I] |
+[12-22-2022 22:54:11] [I] | enableVotekick: true
+[12-22-2022 22:54:11] [I] | | Whether votekick is enabled.
+[12-22-2022 22:54:11] [I] |
+[12-22-2022 22:54:11] [I] | startCommands: 
+[12-22-2022 22:54:11] [I] | | Commands run at startup. This should be a comma-separated list.
+[12-22-2022 22:54:11] [I] |
+[12-22-2022 22:54:11] [I] | logging: true
+[12-22-2022 22:54:11] [I] | | Whether to log everything to files.
+[12-22-2022 22:54:11] [I] |
+[12-22-2022 22:54:11] [I] | strict: true
+[12-22-2022 22:54:11] [I] | | Whether strict mode is on - corrects positions and prevents duplicate UUIDs.
+[12-22-2022 22:54:11] [I] |
+[12-22-2022 22:54:11] [I] | antiSpam: true
+[12-22-2022 22:54:11] [I] | | Whether spammers are automatically kicked and rate-limited.
+[12-22-2022 22:54:11] [I] |
+[12-22-2022 22:54:11] [I] | interactRateWindow: 6
+[12-22-2022 22:54:11] [I] | | Block interaction rate limit window, in seconds.
+[12-22-2022 22:54:11] [I] |
+[12-22-2022 22:54:11] [I] | interactRateLimit: 25
+[12-22-2022 22:54:11] [I] | | Block interaction rate limit.
+[12-22-2022 22:54:11] [I] |
+[12-22-2022 22:54:11] [I] | interactRateKick: 60
+[12-22-2022 22:54:11] [I] | | How many times a player must interact inside the window to get kicked.
+[12-22-2022 22:54:11] [I] |
+[12-22-2022 22:54:11] [I] | messageRateLimit: 0
+[12-22-2022 22:54:11] [I] | | Message rate limit in seconds. 0 to disable.
+[12-22-2022 22:54:11] [I] |
+[12-22-2022 22:54:11] [I] | messageSpamKick: 3
+[12-22-2022 22:54:11] [I] | | How many times a player must send a message before the cooldown to get kicked. 0 to disable.
+[12-22-2022 22:54:11] [I] |
+[12-22-2022 22:54:11] [I] | packetSpamLimit: 300
+[12-22-2022 22:54:11] [I] | | Limit for packet count sent within 3sec that will lead to a blacklist + kick.
+[12-22-2022 22:54:11] [I] |
+[12-22-2022 22:54:11] [I] | packetSpamLimit: 20
+[12-22-2022 22:54:11] [I] | | Limit for chat packet count sent within 2sec that will lead to a blacklist + kick. Not the same as a rate limit.
+[12-22-2022 22:54:11] [I] |
+[12-22-2022 22:54:11] [I] | socketInput: false
+[12-22-2022 22:54:11] [I] | | Allows a local application to control this server through a local TCP socket.
+[12-22-2022 22:54:11] [I] |
+[12-22-2022 22:54:11] [I] | socketInputPort: 6859
+[12-22-2022 22:54:11] [I] | | The port for socket input.
+[12-22-2022 22:54:11] [I] |
+[12-22-2022 22:54:11] [I] | socketInputAddress: localhost
+[12-22-2022 22:54:11] [I] | | The bind address for socket input.
+[12-22-2022 22:54:11] [I] |
+[12-22-2022 22:54:11] [I] | allowCustomClients: false
+[12-22-2022 22:54:11] [I] | | Whether custom clients are allowed to connect.
+[12-22-2022 22:54:11] [I] |
+[12-22-2022 22:54:11] [I] | whitelist: false
+[12-22-2022 22:54:11] [I] | | Whether the whitelist is used.
+[12-22-2022 22:54:11] [I] |
+[12-22-2022 22:54:11] [I] | motd: off
+[12-22-2022 22:54:11] [I] | | The message displayed to people on connection.
+[12-22-2022 22:54:11] [I] |
+[12-22-2022 22:54:11] [I] | autosave: false
+[12-22-2022 22:54:11] [I] | | Whether the periodically save the map when playing.
+[12-22-2022 22:54:11] [I] |
+[12-22-2022 22:54:11] [I] | autosaveAmount: 10
+[12-22-2022 22:54:11] [I] | | The maximum amount of autosaves. Older ones get replaced.
+[12-22-2022 22:54:11] [I] |
+[12-22-2022 22:54:11] [I] | autosaveSpacing: 300
+[12-22-2022 22:54:11] [I] | | Spacing between autosaves in seconds.
+[12-22-2022 22:54:11] [I] |
+[12-22-2022 22:54:11] [I] | debug: false
+[12-22-2022 22:54:11] [I] | | Enable debug logging.
+[12-22-2022 22:54:11] [I] |
+[12-22-2022 22:54:11] [I] | snapshotInterval: 200
+[12-22-2022 22:54:11] [I] | | Client entity snapshot interval in ms.
+[12-22-2022 22:54:11] [I] |
+[12-22-2022 22:54:11] [I] | autoPause: false
+[12-22-2022 22:54:11] [I] | | Whether the game should pause when nobody is online.
+[12-22-2022 22:54:11] [I] |
