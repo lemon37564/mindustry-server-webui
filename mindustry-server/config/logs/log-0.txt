@@ -1,0 +1,10 @@
+[12-22-2022 21:36:15] [I] Server loaded. Type 'help' for help.
+[12-22-2022 21:36:16] [I] Randomized next map to be Wasteland.
+[12-22-2022 21:36:16] [I] Loading map...
+[12-22-2022 21:36:17] [I] Map loaded.
+[12-22-2022 21:36:17] [I] Opened a server on port 6567.
+[12-22-2022 21:36:19] [E] Command not found. Did you mean "stop"?
+[12-22-2022 21:36:21] [I] Stopped server.
+[12-22-2022 21:36:22] [I] Stopped server.
+[12-22-2022 21:36:23] [I] Stopped server.
+[12-22-2022 21:36:24] [I] Shutting down server.

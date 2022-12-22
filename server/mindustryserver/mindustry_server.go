@@ -59,5 +59,13 @@ func (server MindustryServer) GetOutput() (output []byte) {
 }
 
 func (server MindustryServer) Shutdown() (err error) {
-	return server.cmd.Process.Kill()
+	err = server.SendCommand("stop")
+	if err != nil {
+		return err
+	}
+	err = server.SendCommand("exit")
+	if err != nil {
+		return err
+	}
+	return nil
 }
