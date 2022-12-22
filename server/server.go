@@ -3,6 +3,7 @@ package server
 import (
 	"log"
 	"mindserver/server/mindustryserver"
+	"net/http"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -38,8 +39,12 @@ func Serve() {
 		return nil
 	})
 	app.Get("/api/get/commandline_output", func(c *fiber.Ctx) error {
-		output := mindustryServer.GetOutput()
-		return c.SendString(string(output))
+		if mindustryServer.IsOutputUpdated() {
+			output := mindustryServer.GetOutput()
+			return c.SendString(string(output))
+		}
+		// the result is not changed, use the cached result
+		return c.SendStatus(http.StatusNotModified)
 	})
 	app.Post("/api/post/upload_new_maps", func(c *fiber.Ctx) error {
 		return nil

@@ -7,12 +7,13 @@ import (
 )
 
 type MindustryServer struct {
-	cmd          *exec.Cmd
-	started      bool
-	inPipe       io.WriteCloser
-	outPipe      io.ReadCloser
-	scanner      *bufio.Scanner
-	outputBuffer []byte
+	cmd           *exec.Cmd
+	started       bool
+	inPipe        io.WriteCloser
+	outPipe       io.ReadCloser
+	scanner       *bufio.Scanner
+	outputBuffer  []byte
+	outputChanged bool
 }
 
 func NewMindustryServer() MindustryServer {
@@ -23,6 +24,7 @@ func NewMindustryServer() MindustryServer {
 	server.inPipe, _ = server.cmd.StdinPipe()
 	server.outPipe, _ = server.cmd.StdoutPipe()
 	server.outputBuffer = make([]byte, 0)
+	server.outputChanged = false
 	return server
 }
 
@@ -43,6 +45,7 @@ func (server *MindustryServer) Start() (err error) {
 		for server.scanner.Scan() {
 			server.outputBuffer = append(server.outputBuffer, server.scanner.Bytes()...)
 			server.outputBuffer = append(server.outputBuffer, '\n')
+			server.outputChanged = true
 		}
 	}()
 
@@ -56,11 +59,16 @@ func (server *MindustryServer) SendCommand(command string) (err error) {
 	return err
 }
 
-func (server MindustryServer) GetOutput() (output []byte) {
+func (server *MindustryServer) GetOutput() (output []byte) {
+	server.outputChanged = false
 	return server.outputBuffer
 }
 
-func (server MindustryServer) Shutdown() (err error) {
+func (server MindustryServer) IsOutputUpdated() bool {
+	return server.outputChanged
+}
+
+func (server *MindustryServer) Shutdown() (err error) {
 	err = server.SendCommand("stop")
 	if err != nil {
 		return err

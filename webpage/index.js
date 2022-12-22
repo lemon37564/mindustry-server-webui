@@ -12,18 +12,11 @@ function start() {
                 method: "POST", body: JSON.stringify({ command: "maps all" }), headers: new Headers({
                     "Content-Type": "application/json"
                 })
-            }).then(() => {
-                getCommandlineOutput();
             })
         }
     )
-    document.getElementById("get-output-btn").addEventListener("click",
-        () => {
-            fetch("/api/get/commandline_output", { method: "GET" }).then(
-                response => console.log(response)
-            );
-        }
-    )
+    
+    setInterval(getCommandlineOutput, 400);
 
 }
 
@@ -31,6 +24,12 @@ function getCommandlineOutput() {
     let request = new XMLHttpRequest();
     request.open("GET", "/api/get/commandline_output");
     request.onload = () => {
+        // status not modified
+        if (request.status == 304) {
+            console.log("not modified");
+            return;
+        }
+        console.log(request.response);
         document.getElementById("commandline-output").innerHTML = request.response;
     }
     request.send();
