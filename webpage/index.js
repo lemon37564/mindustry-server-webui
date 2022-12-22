@@ -13,7 +13,7 @@ function start() {
                     "Content-Type": "application/json"
                 })
             }).then(() => {
-                fetch("/api/get/commandline_output").then(data => console.log(data));
+                getCommandlineOutput();
             })
         }
     )
@@ -25,6 +25,15 @@ function start() {
         }
     )
 
+}
+
+function getCommandlineOutput() {
+    let request = new XMLHttpRequest();
+    request.open("GET", "/api/get/commandline_output");
+    request.onload = () => {
+        document.getElementById("commandline-output").innerHTML = request.response;
+    }
+    request.send();
 }
 
 window.addEventListener("load", start, false);

@@ -19,20 +19,30 @@ func Serve() {
 	app.Static("/", "./webpage")
 
 	app.Post("/api/post/start_server", func(c *fiber.Ctx) error {
-		return mindustryServer.Start()
+		if err := mindustryServer.Start(); err != nil {
+			log.Println("Error when starting server:", err)
+			return err
+		}
+		return nil
 	})
 	app.Post("/api/post/send_command", func(c *fiber.Ctx) error {
 		cmd := new(Command)
 		if err := c.BodyParser(cmd); err != nil {
-			log.Println("In parsing body:", err)
+			log.Println("Error in parsing body:", err)
 			return err
 		}
-		mindustryServer.SendCommand(cmd.Cmd)
+		if err := mindustryServer.SendCommand(cmd.Cmd); err != nil {
+			log.Println("Error in sending command:", err)
+			return err
+		}
 		return nil
 	})
 	app.Get("/api/get/commandline_output", func(c *fiber.Ctx) error {
 		output := mindustryServer.GetOutput()
-		return c.Send(output)
+		return c.SendString(string(output))
+	})
+	app.Post("/api/post/upload_new_maps", func(c *fiber.Ctx) error {
+		return nil
 	})
 
 	log.Fatal(app.Listen(":8086"))
