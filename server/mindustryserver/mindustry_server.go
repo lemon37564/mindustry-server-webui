@@ -49,7 +49,7 @@ func (server *MindustryServer) Start() (err error) {
 			if err != nil {
 				log.Println("Error reading stdout from mindustry:", err)
 			}
-			log.Println("Mindustry server:", line)
+			log.Println("Mindustry server:", string(line))
 			server.outputBuffer = append(server.outputBuffer, line...)
 			server.outputBuffer = append(server.outputBuffer, '\n')
 			server.outputChanged = true
