@@ -1,1 +1,4 @@
-*.db
+config/logs/*
+config/*.log
+config/*.bin
+config/settings_backups/*

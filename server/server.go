@@ -39,7 +39,6 @@ func Serve() {
 		return nil
 	})
 	app.Get("/api/get/commandline_output", func(c *fiber.Ctx) error {
-
 		output, err := mindustryServer.GetOutput()
 		if err != nil {
 			return err
