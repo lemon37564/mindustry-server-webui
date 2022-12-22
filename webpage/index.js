@@ -14,6 +14,10 @@ function start() {
     document.getElementById("runwave-btn").addEventListener("click",
         () => sendCommand("runwave")
     );
+    document.getElementById("stop-btn").addEventListener("click",
+        () => sendCommand("stop")
+    );
+
     document.getElementById("run10wave-btn").addEventListener("click",
         () => {
             for (let i = 0; i < 10; i++) {
@@ -111,6 +115,11 @@ function uploadMap() {
                         method: "POST", body: this.result, headers: new Headers({
                             "Content-Type": "application/octet-stream"
                         })
+                    }).then(() => {
+                        // when the final one was uploaded, reloadmaps
+                        if (i == input.files.length - 1) {
+                            setTimeout(() => sendCommand("reloadmaps"), 150);
+                        }
                     });
                 };
             }
