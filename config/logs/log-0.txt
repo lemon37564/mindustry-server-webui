@@ -1,0 +1,25 @@
+[12-22-2022 20:29:18] [I] Server loaded. Type 'help' for help.
+[12-22-2022 20:29:18] [I] Randomized next map to be Islands.
+[12-22-2022 20:29:18] [I] Loading map...
+[12-22-2022 20:29:18] [I] Map loaded.
+[12-22-2022 20:29:19] [I] Opened a server on port 6567.
+[12-22-2022 20:29:28] [I] Server loaded. Type 'help' for help.
+[12-22-2022 20:29:28] [I] Randomized next map to be Maze.
+[12-22-2022 20:29:28] [I] Loading map...
+[12-22-2022 20:29:28] [I] Map loaded.
+[12-22-2022 20:29:28] [I] Opened a server on port 6567.
+[12-22-2022 20:29:49] [I] Server loaded. Type 'help' for help.
+[12-22-2022 20:29:49] [I] Randomized next map to be Mud Flats.
+[12-22-2022 20:29:49] [I] Loading map...
+[12-22-2022 20:29:50] [I] Map loaded.
+[12-22-2022 20:29:50] [I] Opened a server on port 6567.
+[12-22-2022 20:33:42] [I] Server loaded. Type 'help' for help.
+[12-22-2022 20:33:42] [I] Randomized next map to be Archipelago.
+[12-22-2022 20:33:42] [I] Loading map...
+[12-22-2022 20:33:42] [I] Map loaded.
+[12-22-2022 20:33:42] [I] Opened a server on port 6567.
+[12-22-2022 20:33:53] [I] Server loaded. Type 'help' for help.
+[12-22-2022 20:33:53] [I] Randomized next map to be Fork.
+[12-22-2022 20:33:53] [I] Loading map...
+[12-22-2022 20:33:53] [I] Map loaded.
+[12-22-2022 20:33:53] [I] Opened a server on port 6567.
