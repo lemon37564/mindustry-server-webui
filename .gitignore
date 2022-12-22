@@ -1,4 +1,3 @@
-config/logs/*
+config/*
 *.log
 *.bin
-config/settings_backups/*
