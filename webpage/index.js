@@ -14,6 +14,13 @@ function start() {
     document.getElementById("runwave-btn").addEventListener("click",
         () => sendCommand("runwave")
     );
+    document.getElementById("run10wave-btn").addEventListener("click",
+        () => {
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => sendCommand("runwave"), 100 * i);
+            }
+        }
+    );
     document.getElementById("gameover-btn").addEventListener("click",
         () => sendCommand("gameover")
     );
@@ -31,9 +38,19 @@ function start() {
         }
     );
     document.getElementById("upload-map-btn").addEventListener("click", uploadMap);
-    document.getElementById("send-custom-btn").addEventListener("click",
+
+    let commandInput = document.getElementById("custom-command");
+    let sendCommandBtn = document.getElementById("send-custom-btn");
+    commandInput.addEventListener("keyup",
+        (e) => {
+            if (e.key.toLocaleLowerCase() == "enter") {
+                sendCommandBtn.click();
+                commandInput.value = "";
+            }
+        })
+    sendCommandBtn.addEventListener("click",
         () => {
-            let command = document.getElementById("custom-command").value;
+            let command = commandInput.value;
             sendCommand(command);
         }
     );
