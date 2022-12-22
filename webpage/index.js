@@ -16,11 +16,11 @@ function start() {
         }
     )
     
-    setInterval(getCommandlineOutput, 400);
+    setInterval(updateCommandlineOutput, 400);
 
 }
 
-function getCommandlineOutput() {
+function updateCommandlineOutput() {
     let request = new XMLHttpRequest();
     request.open("GET", "/api/get/commandline_output");
     request.onload = () => {
