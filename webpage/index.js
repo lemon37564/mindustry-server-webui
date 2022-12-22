@@ -1,49 +1,75 @@
+let interval;
 
 function start() {
     document.getElementById("start-btn").addEventListener("click",
         () => {
             fetch("/api/post/start_server", { method: "POST" })
-                .then(data => console.log(data));
-        });
+                .then(sendCommand("host"));
+        }
+    );
 
     document.getElementById("show-maps-btn").addEventListener("click",
+        () => sendCommand("maps all")
+    );
+    document.getElementById("runwave-btn").addEventListener("click",
+        () => sendCommand("runwave")
+    );
+    document.getElementById("gameover-btn").addEventListener("click",
+        () => sendCommand("gameover")
+    );
+
+    let btn = document.getElementById("pause-btn");
+    btn.addEventListener("click",
         () => {
-            fetch("/api/post/send_command", {
-                method: "POST", body: JSON.stringify({ command: "maps all" }), headers: new Headers({
-                    "Content-Type": "application/json"
-                })
-            })
+            if (btn.innerHTML == "Game pause") {
+                btn.innerHTML = "Game resume";
+                sendCommand("pause on");
+            } else {
+                btn.innerHTML = "Game pause";
+                sendCommand("pause off");
+            }
         }
-    )
-
-    let interval = setInterval(() => {
-        try {
-            updateCommandlineOutput();
-        } catch (err) {
-            console.log(err);
-            clearInterval(interval);
+    );
+    document.getElementById("send-custom-btn").addEventListener("click",
+        () => {
+            let command = document.getElementById("custom-command").value;
+            sendCommand(command);
         }
-    }, 400);
+    );
 
+    interval = setInterval(() => { updateCommandlineOutput(false) }, 300);
+    updateCommandlineOutput(true);
 }
 
-function updateCommandlineOutput() {
+function updateCommandlineOutput(forceUpdate) {
     let request = new XMLHttpRequest();
-    request.open("GET", "/api/get/commandline_output");
+    if (forceUpdate) {
+        request.open("GET", "/api/get/commandline_output?force_update=true");
+    } else {
+        request.open("GET", "/api/get/commandline_output");
+    }
     request.onload = () => {
         if (request.status == 200) {
             // ok
-            console.log(request.response);
-            document.getElementById("commandline-output").innerHTML = request.response;
+            let response = request.response;
+            response = response.replaceAll("\n", "<br>");
+            document.getElementById("commandline-output").innerHTML = response;
         } else if (request.status == 304) {
             // not modified
-            console.log("not modified");
             return;
         } else {
-            // deal with some error
+            // TODO: deal with some error
         }
     }
     request.send();
+}
+
+function sendCommand(cmd) {
+    fetch("/api/post/send_command", {
+        method: "POST", body: JSON.stringify({ command: cmd }), headers: new Headers({
+            "Content-Type": "application/json"
+        })
+    });
 }
 
 window.addEventListener("load", start, false);

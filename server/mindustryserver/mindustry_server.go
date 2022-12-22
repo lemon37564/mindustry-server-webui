@@ -3,19 +3,17 @@ package mindustryserver
 import (
 	"bufio"
 	"io"
+	"log"
 	"os/exec"
 	"regexp"
 )
-
-// something like \033[101m    , use this to delete all the color code to make it plain text
-var colorCodeReplace = regexp.MustCompile("\033" + regexp.QuoteMeta("[") + "[0-9]+m")
 
 type MindustryServer struct {
 	cmd           *exec.Cmd
 	started       bool
 	inPipe        io.WriteCloser
 	outPipe       io.ReadCloser
-	scanner       *bufio.Scanner
+	reader        *bufio.Reader
 	outputBuffer  []byte
 	outputChanged bool
 }
@@ -41,13 +39,17 @@ func (server *MindustryServer) Start() (err error) {
 		return err
 	}
 
-	server.scanner = bufio.NewScanner(server.outPipe)
+	server.reader = bufio.NewReader(server.outPipe)
 	server.started = true
 
 	// Get output as much as possible
 	go func() {
-		for server.scanner.Scan() {
-			server.outputBuffer = append(server.outputBuffer, server.scanner.Bytes()...)
+		for {
+			line, _, err := server.reader.ReadLine()
+			if err != nil {
+				log.Println("Error reading stdout from mindustry:", err)
+			}
+			server.outputBuffer = append(server.outputBuffer, line...)
 			server.outputBuffer = append(server.outputBuffer, '\n')
 			server.outputChanged = true
 		}
@@ -62,6 +64,9 @@ func (server *MindustryServer) SendCommand(command string) (err error) {
 	_, err = server.inPipe.Write([]byte(command + "\n"))
 	return err
 }
+
+// something like \033[101m    , use this to delete all the color code to make it plain text
+var colorCodeReplace = regexp.MustCompile("\033" + regexp.QuoteMeta("[") + "[0-9]+m")
 
 func (server *MindustryServer) GetOutput() (output []byte) {
 	server.outputChanged = false

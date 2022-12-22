@@ -40,15 +40,17 @@ func Serve() {
 		return nil
 	})
 	app.Get("/api/get/commandline_output", func(c *fiber.Ctx) error {
-		if mindustryServer.IsOutputUpdated() {
+		// update when output updated or the force_update is set to true
+		if mindustryServer.IsOutputUpdated() || c.Query("force_update") == "true" {
 			output := mindustryServer.GetOutput()
-			fmt.Println(string(output))
 			return c.SendString(string(output))
 		}
 		// the result is not changed, use the cached result
 		return c.SendStatus(http.StatusNotModified)
 	})
 	app.Post("/api/post/upload_new_maps", func(c *fiber.Ctx) error {
+		c.Accepts("application/octet-stream")
+		fmt.Println(c.Body())
 		return nil
 	})
 

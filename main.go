@@ -1,6 +1,8 @@
 package main
 
-import "mindserver/server"
+import (
+	"mindserver/server"
+)
 
 func main() {
 	server.Serve()

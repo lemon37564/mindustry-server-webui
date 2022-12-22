@@ -9,12 +9,24 @@
 </head>
 
 <body>
-  <button id="start-btn" type="button" class="btn btn-primary">Start the server</button>
-  <button id="show-maps-btn" type="button" class="btn btn-primary">Show all maps</button>
+  <div>
+    <button id="start-btn" type="button" class="btn btn-primary">Start the server</button>
+    <button id="show-maps-btn" type="button" class="btn btn-primary">Show all maps</button>
+    <button id="runwave-btn" type="button" class="btn btn-primary">Runwave</button>
+    <button id="pause-btn" type="button" class="btn btn-primary">Game pause</button>
+    <button id="gameover-btn" type="button" class="btn btn-danger">Gameover</button>
+  </div>
+
+  <div>
+    <label for="custom-command" class="form-label">Custom command</label>
+    <input type="text" id="custom-command" class="form-control">
+    <button class="btn btn-primary" id="send-custom-btn">Submit</button>
+  </div>
+
 
   <div>
     <p id="commandline-output"></p>
   </div>
 </body>
-  
+
 </html>
