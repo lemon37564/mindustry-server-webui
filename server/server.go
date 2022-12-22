@@ -25,12 +25,27 @@ func Serve() {
 		return nil
 	})
 	app.Get("/api/get/maps_list", func(c *fiber.Ctx) error {
+		err := mindustryServer.SendCommand("maps all\n")
+		if err != nil {
+			return err
+		}
+		output, err := mindustryServer.GetOutput()
+		if err != nil {
+			return err
+		}
+		c.JSON(output)
+		fmt.Println(string(output))
+		// c.Write(output)
 		return nil
 	})
 	app.Get("/api/get/commandline_output", func(c *fiber.Ctx) error {
+
 		output, err := mindustryServer.GetOutput()
-		c.Send(output)
-		return err
+		if err != nil {
+			return err
+		}
+		fmt.Println(string(output))
+		return c.Send(output)
 	})
 	app.Post("api/post/runwave", func(c *fiber.Ctx) error {
 		return nil
