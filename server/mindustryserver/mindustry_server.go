@@ -26,13 +26,13 @@ func NewMindustryServer() MindustryServer {
 	return server
 }
 
-func (server *MindustryServer) Start() {
+func (server *MindustryServer) Start() (err error) {
 	if server.started {
 		return
 	}
-	err := server.cmd.Start()
+	err = server.cmd.Start()
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	server.scanner = bufio.NewScanner(server.outPipe)
@@ -45,6 +45,8 @@ func (server *MindustryServer) Start() {
 			server.outputBuffer = append(server.outputBuffer, '\n')
 		}
 	}()
+
+	return nil
 }
 
 func (server *MindustryServer) SendCommand(command string) (err error) {

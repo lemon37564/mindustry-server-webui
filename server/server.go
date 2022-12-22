@@ -1,12 +1,15 @@
 package server
 
 import (
-	"fmt"
 	"log"
 	"mindserver/server/mindustryserver"
 
 	"github.com/gofiber/fiber/v2"
 )
+
+type Command struct {
+	Cmd string `json:"command" xml:"command" form:"command"`
+}
 
 func Serve() {
 	mindustryServer := mindustryserver.NewMindustryServer()
@@ -16,32 +19,20 @@ func Serve() {
 	app.Static("/", "./webpage")
 
 	app.Post("/api/post/start_server", func(c *fiber.Ctx) error {
-		mindustryServer.Start()
-		return nil
+		return mindustryServer.Start()
 	})
 	app.Post("/api/post/send_command", func(c *fiber.Ctx) error {
-		fmt.Println(c.Body())
-		// mindustryServer.SendCommand(string(c.Body()))
-		return nil
-	})
-	app.Get("/api/get/maps_list", func(c *fiber.Ctx) error {
-		err := mindustryServer.SendCommand("maps all\n")
-		if err != nil {
+		cmd := new(Command)
+		if err := c.BodyParser(cmd); err != nil {
+			log.Println("In parsing body:", err)
 			return err
 		}
-		output := mindustryServer.GetOutput()
-		c.JSON(output)
-		fmt.Println(string(output))
-		// c.Write(output)
+		mindustryServer.SendCommand(cmd.Cmd)
 		return nil
 	})
 	app.Get("/api/get/commandline_output", func(c *fiber.Ctx) error {
 		output := mindustryServer.GetOutput()
-		fmt.Println(string(output))
 		return c.Send(output)
-	})
-	app.Post("api/post/runwave", func(c *fiber.Ctx) error {
-		return nil
 	})
 
 	log.Fatal(app.Listen(":8086"))
