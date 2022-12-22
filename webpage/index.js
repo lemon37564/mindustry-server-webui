@@ -76,13 +76,14 @@ function sendCommand(cmd) {
 function uploadMap() {
     let input = document.createElement("input");
     input.type = "file";
+    input.setAttribute("multiple", "");
     input.setAttribute("accept", ".msav");
     input.onchange = (_) => {
 
         for (let i = 0; i < input.files.length; i++) {
-            let uploadFile = input.files[0];
+            let uploadFile = input.files[i];
             if (uploadFile) {
-                let filename = input.value;
+                let filename = uploadFile.name;
                 filename = filename.replace(/.*[\/\\]/, '');
 
                 let reader = new FileReader();
@@ -93,7 +94,7 @@ function uploadMap() {
                         method: "POST", body: this.result, headers: new Headers({
                             "Content-Type": "application/octet-stream"
                         })
-                    }).then(() => console.log("complete"));
+                    });
                 };
             }
         }

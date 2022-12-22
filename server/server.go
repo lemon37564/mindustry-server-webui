@@ -60,6 +60,7 @@ func Serve() {
 			log.Println("Error when writing file:", err)
 			return err
 		}
+		log.Println("Upload new map:", c.Params("filename"))
 		return nil
 	})
 
