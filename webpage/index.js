@@ -30,6 +30,7 @@ function start() {
             }
         }
     );
+    document.getElementById("upload-map-btn").addEventListener("click", uploadMap);
     document.getElementById("send-custom-btn").addEventListener("click",
         () => {
             let command = document.getElementById("custom-command").value;
@@ -70,6 +71,34 @@ function sendCommand(cmd) {
             "Content-Type": "application/json"
         })
     });
+}
+
+function uploadMap() {
+    let input = document.createElement("input");
+    input.type = "file";
+    input.setAttribute("accept", ".msav");
+    input.onchange = (_) => {
+
+        for (let i = 0; i < input.files.length; i++) {
+            let uploadFile = input.files[0];
+            if (uploadFile) {
+                let filename = input.value;
+                filename = filename.replace(/.*[\/\\]/, '');
+
+                let reader = new FileReader();
+
+                reader.readAsArrayBuffer(uploadFile);
+                reader.onload = function (e) {
+                    fetch("/api/post/upload_new_map/" + filename, {
+                        method: "POST", body: this.result, headers: new Headers({
+                            "Content-Type": "application/octet-stream"
+                        })
+                    }).then(() => console.log("complete"));
+                };
+            }
+        }
+    };
+    input.click();
 }
 
 window.addEventListener("load", start, false);

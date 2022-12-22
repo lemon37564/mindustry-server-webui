@@ -1,10 +1,10 @@
 package server
 
 import (
-	"fmt"
 	"log"
 	"mindserver/server/mindustryserver"
 	"net/http"
+	"os"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -48,9 +48,18 @@ func Serve() {
 		// the result is not changed, use the cached result
 		return c.SendStatus(http.StatusNotModified)
 	})
-	app.Post("/api/post/upload_new_maps", func(c *fiber.Ctx) error {
+	app.Post("/api/post/upload_new_map/:filename", func(c *fiber.Ctx) error {
 		c.Accepts("application/octet-stream")
-		fmt.Println(c.Body())
+		f, err := os.Create("config/maps/" + c.Params("filename"))
+		if err != nil {
+			log.Println("Error when creating file:", err)
+			return err
+		}
+		_, err = f.Write(c.Body())
+		if err != nil {
+			log.Println("Error when writing file:", err)
+			return err
+		}
 		return nil
 	})
 
