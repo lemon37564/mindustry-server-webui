@@ -31,13 +31,10 @@ func (server Server) Serve() {
 	server.hanleSigInt()
 	server.app.Static("/", "./webpage")
 
-	server.app.Post("/api/post/start_server", func(c *fiber.Ctx) error {
-		if err := server.mindustry.Start(); err != nil {
-			log.Println("Error when starting server:", err)
-			return err
-		}
-		return nil
-	})
+	if err := server.mindustry.Start(); err != nil {
+		log.Fatal("Error when starting server:", err)
+	}
+
 	server.app.Post("/api/post/kill_server", func(c *fiber.Ctx) error {
 		if err := server.mindustry.Kill(); err != nil {
 			log.Println("Error when killing server:", err)

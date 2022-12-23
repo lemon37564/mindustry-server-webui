@@ -4,12 +4,8 @@ const MAX_LINE = 1000;
 
 function start() {
     document.getElementById("start-btn").addEventListener("click",
-        () => {
-            fetch("/api/post/start_server", { method: "POST" })
-                .then(sendCommand("host"));
-        }
+        () => sendCommand("host")
     );
-
     document.getElementById("show-maps-btn").addEventListener("click",
         () => sendCommand("maps all")
     );
