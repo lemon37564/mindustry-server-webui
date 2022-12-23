@@ -32,6 +32,8 @@ func Serve() {
 			log.Println("Error when killing server:", err)
 			return err
 		}
+		log.Println("[Info] Server killed")
+		mindustryServer = mindustryserver.NewMindustryServer()
 		return nil
 	})
 	app.Post("/api/post/send_command", func(c *fiber.Ctx) error {

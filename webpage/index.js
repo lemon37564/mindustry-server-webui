@@ -44,7 +44,10 @@ function start() {
     document.getElementById("upload-map-btn").addEventListener("click", uploadMap);
 
     document.getElementById("kill-btn").addEventListener("click",
-        () => fetch("/api/post/kill_server", { method: "POST" })
+        () => {
+            fetch("/api/post/kill_server", { method: "POST" })
+                .then(() => { document.getElementById("commandline-output").innerHTML = ""; });
+        }
     );
 
     let commandInput = document.getElementById("custom-command");

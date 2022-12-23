@@ -7,11 +7,12 @@ import (
 	"log"
 	"os/exec"
 	"regexp"
+	"time"
 )
 
 type MindustryServer struct {
 	cmd           *exec.Cmd
-	started       bool
+	running       bool
 	inPipe        io.WriteCloser
 	outPipe       io.ReadCloser
 	reader        *bufio.Reader
@@ -23,16 +24,17 @@ func NewMindustryServer() MindustryServer {
 	server := *new(MindustryServer)
 
 	server.cmd = exec.Command("java", "-jar", "./mindustry-server/server.jar")
-	server.started = false
+	server.running = false
 	server.inPipe, _ = server.cmd.StdinPipe()
 	server.outPipe, _ = server.cmd.StdoutPipe()
 	server.outputBuffer = make([]byte, 0)
 	server.outputChanged = false
+
 	return server
 }
 
 func (server *MindustryServer) Start() (err error) {
-	if server.started {
+	if server.running {
 		return
 	}
 	err = server.cmd.Start()
@@ -41,15 +43,23 @@ func (server *MindustryServer) Start() (err error) {
 	}
 
 	server.reader = bufio.NewReader(server.outPipe)
-	server.started = true
+	server.running = true
 
 	// Get output as much as possible
 	go func() {
-		for {
+		for server.running {
 			line, _, err := server.reader.ReadLine()
 			if err != nil {
+				// this happens when server was killed
+				// should have a better way to handle this
+				if err == io.EOF {
+					time.Sleep(time.Millisecond * 500)
+					continue
+				}
 				log.Println("Error reading stdout from mindustry:", err)
 			}
+
+			// also print output to stdout
 			fmt.Println(string(line))
 			server.outputBuffer = append(server.outputBuffer, line...)
 			server.outputBuffer = append(server.outputBuffer, '\n')
@@ -99,6 +109,7 @@ func (server *MindustryServer) Exit() (err error) {
 }
 
 func (server *MindustryServer) Kill() (err error) {
+	server.running = false
 	err = server.cmd.Process.Kill()
 	return err
 }
