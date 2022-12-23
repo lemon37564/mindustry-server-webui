@@ -2,6 +2,7 @@ package mindustryserver
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 	"log"
 	"os/exec"
@@ -49,7 +50,7 @@ func (server *MindustryServer) Start() (err error) {
 			if err != nil {
 				log.Println("Error reading stdout from mindustry:", err)
 			}
-			log.Println("Mindustry server:", string(line))
+			fmt.Println(string(line))
 			server.outputBuffer = append(server.outputBuffer, line...)
 			server.outputBuffer = append(server.outputBuffer, '\n')
 			server.outputChanged = true
