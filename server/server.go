@@ -27,6 +27,13 @@ func Serve() {
 		}
 		return nil
 	})
+	app.Post("/api/post/kill_server", func(c *fiber.Ctx) error {
+		if err := mindustryServer.Kill(); err != nil {
+			log.Println("Error when killing server:", err)
+			return err
+		}
+		return nil
+	})
 	app.Post("/api/post/send_command", func(c *fiber.Ctx) error {
 		cmd := new(Command)
 		if err := c.BodyParser(cmd); err != nil {

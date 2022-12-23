@@ -86,7 +86,7 @@ func (server MindustryServer) IsOutputUpdated() bool {
 	return server.outputChanged
 }
 
-func (server *MindustryServer) Shutdown() (err error) {
+func (server *MindustryServer) Exit() (err error) {
 	err = server.SendCommand("stop")
 	if err != nil {
 		return err
@@ -96,4 +96,9 @@ func (server *MindustryServer) Shutdown() (err error) {
 		return err
 	}
 	return nil
+}
+
+func (server *MindustryServer) Kill() (err error) {
+	err = server.cmd.Process.Kill()
+	return err
 }
