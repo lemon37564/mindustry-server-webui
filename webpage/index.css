@@ -9,6 +9,7 @@
     font-size: smaller;
     margin: 6px;
     padding: 6px;
+    min-height: 240px;
 }
 
 #main-div {
