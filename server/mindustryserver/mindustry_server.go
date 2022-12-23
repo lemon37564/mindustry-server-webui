@@ -11,12 +11,13 @@ import (
 )
 
 type MindustryServer struct {
-	cmd           *exec.Cmd
-	running       bool
-	inPipe        io.WriteCloser
-	outPipe       io.ReadCloser
-	reader        *bufio.Reader
-	outputChannel chan []byte
+	cmd     *exec.Cmd
+	running bool
+	inPipe  io.WriteCloser
+	outPipe io.ReadCloser
+	reader  *bufio.Reader
+	// a set of channel which handle bytes
+	outputChannels map[chan []byte]struct{}
 }
 
 func NewMindustryServer() *MindustryServer {
@@ -26,7 +27,7 @@ func NewMindustryServer() *MindustryServer {
 	server.running = false
 	server.inPipe, _ = server.cmd.StdinPipe()
 	server.outPipe, _ = server.cmd.StdoutPipe()
-	server.outputChannel = make(chan []byte)
+	server.outputChannels = make(map[chan []byte]struct{})
 
 	return server
 }
@@ -64,7 +65,10 @@ func (server *MindustryServer) Start() (err error) {
 			fmt.Println(string(line))
 			line = colorCodeReplace.ReplaceAll(line, []byte(""))
 			line = append(line, byte('\n'))
-			server.outputChannel <- line
+
+			for ch := range server.outputChannels {
+				ch <- line
+			}
 		}
 	}()
 
@@ -76,8 +80,12 @@ func (server *MindustryServer) SendCommand(command string) (err error) {
 	return err
 }
 
-func (server MindustryServer) GetOutputChannel() chan []byte {
-	return server.outputChannel
+func (server *MindustryServer) AppendOutputChannel(ch chan []byte) {
+	server.outputChannels[ch] = struct{}{}
+}
+
+func (server *MindustryServer) RemoveOutputChannel(ch chan []byte) {
+	delete(server.outputChannels, ch)
 }
 
 func (server *MindustryServer) Exit() (err error) {

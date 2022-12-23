@@ -77,11 +77,15 @@ func (server Server) Serve() {
 	})
 
 	server.app.Get("/ws/mindustry_server", websocket.New(func(c *websocket.Conn) {
+		channel := make(chan []byte)
+		server.mindustry.AppendOutputChannel(channel)
 		closed := false
 		// handle websocket closed
 		// should have better way to handle this
 		c.SetCloseHandler(func(code int, text string) error {
 			closed = true
+			server.mindustry.RemoveOutputChannel(channel)
+			close(channel)
 			if code == websocket.CloseNormalClosure {
 				log.Println("Websocket connection closed")
 			}
@@ -89,7 +93,7 @@ func (server Server) Serve() {
 		})
 		go func() {
 			for {
-				msg := <-server.mindustry.GetOutputChannel()
+				msg := <-channel
 				// close goroutine if connection closed
 				if closed {
 					return
