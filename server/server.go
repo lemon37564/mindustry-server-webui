@@ -31,10 +31,6 @@ func (server Server) Serve() {
 	server.handleSigInt()
 	server.app.Static("/", "./webpage")
 
-	if err := server.mindustry.Start(); err != nil {
-		log.Fatal("Error when starting server:", err)
-	}
-
 	server.app.Post("/api/post/kill_server", func(c *fiber.Ctx) error {
 		if err := server.mindustry.Kill(); err != nil {
 			log.Println("Error when killing server:", err)
@@ -88,6 +84,7 @@ func (server Server) Serve() {
 			}
 			return nil
 		})
+		// send message to client (when message is sent to channel)
 		go func() {
 			for {
 				msg := <-channel
@@ -101,6 +98,7 @@ func (server Server) Serve() {
 				}
 			}
 		}()
+		// recive message from client
 		for {
 			_, msg, err := c.ReadMessage()
 			if err != nil {
@@ -112,6 +110,9 @@ func (server Server) Serve() {
 		}
 	}))
 
+	if err := server.mindustry.Start(); err != nil {
+		log.Fatal("Error when starting server:", err)
+	}
 	log.Fatal(server.app.Listen(":8086"))
 }
 
