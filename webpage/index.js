@@ -32,11 +32,11 @@ function start() {
     let btn = document.getElementById("pause-btn");
     btn.addEventListener("click",
         () => {
-            if (btn.innerHTML == "Game pause") {
-                btn.innerHTML = "Game resume";
+            if (btn.innerHTML == "Pause the game") {
+                btn.innerHTML = "Resume the game";
                 sendCommand("pause on");
             } else {
-                btn.innerHTML = "Game pause";
+                btn.innerHTML = "Pause the game";
                 sendCommand("pause off");
             }
         }
