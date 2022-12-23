@@ -98,7 +98,7 @@ func (server Server) Serve() {
 				}
 			}
 		}()
-		// recive message from client
+		// receive message from client
 		for {
 			_, msg, err := c.ReadMessage()
 			if err != nil {

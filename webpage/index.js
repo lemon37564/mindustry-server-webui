@@ -15,6 +15,9 @@ function start() {
     document.getElementById("stop-btn").addEventListener("click",
         () => sendCommand("stop")
     );
+    document.getElementById("gameover-btn").addEventListener("click",
+        () => sendCommand("gameover")
+    );
 
     document.getElementById("run10wave-btn").addEventListener("click",
         () => {
@@ -22,9 +25,6 @@ function start() {
                 setTimeout(() => sendCommand("runwave"), 50 * i);
             }
         }
-    );
-    document.getElementById("gameover-btn").addEventListener("click",
-        () => sendCommand("gameover")
     );
 
     let btn = document.getElementById("pause-btn");
@@ -54,6 +54,7 @@ function start() {
 
     let commandInput = document.getElementById("custom-command");
     let sendCommandBtn = document.getElementById("send-custom-btn");
+    // send command when press enter, and clear the input box
     commandInput.addEventListener("keyup",
         (e) => {
             if (e.key.toLocaleLowerCase() == "enter") {
@@ -73,6 +74,8 @@ function start() {
 }
 
 function establishWebsocketConnection() {
+    // get current uri and combine to new websocket uri
+    // result will be like ws://localhost:8086/ws/mindustry_server
     let loc = window.location, ws_uri;
     if (loc.protocol === "https:") {
         ws_uri = "wss:";
@@ -85,6 +88,7 @@ function establishWebsocketConnection() {
     wsClient.onmessage = onWsMessage;
 }
 
+// websocket receive message
 function onWsMessage(event) {
     let data = event.data;
     data = data.replaceAll("\n", "<br>");
