@@ -3,32 +3,34 @@
 
 <head>
   <link rel="stylesheet" href="bootstrap-5.2.3-dist/css/bootstrap.min.css">
-  <script src="bootstrap-5.2.3-dist/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="index.css">
+  <script src="bootstrap-5.2.3-dist/js/bootstrap.bundle.min.js"></script>
   <script src="index.js"></script>
   <title>Mindustry Webpage</title>
 </head>
 
 <body>
-  <div>
-    <button id="start-btn" type="button" class="btn btn-primary">Start the server</button>
-    <button id="show-maps-btn" type="button" class="btn btn-primary">Show all maps</button>
-    <button id="runwave-btn" type="button" class="btn btn-primary">Runwave</button>
-    <button id="run10wave-btn" type="button" class="btn btn-danger">Run 10 waves</button>
-    <button id="pause-btn" type="button" class="btn btn-primary">Game pause</button>
-    <button id="upload-map-btn" type="button" class="btn btn-secondary">Upload maps</button>
-    <button id="stop-btn" type="button" class="btn btn-primary">Stop the server</button>
-    <button id="gameover-btn" type="button" class="btn btn-danger">Gameover</button>
-  </div>
-
-  <div>
-    <label for="custom-command" class="form-label">Custom command</label>
-    <input type="text" id="custom-command" class="form-control">
-    <button class="btn btn-primary" id="send-custom-btn">Submit</button>
-  </div>
-
-
-  <div>
-    <p id="commandline-output"></p>
+  <div class="container-fluid" id="main-div">
+    <div class="d-grid gap-2 d-md-block">
+      <button id="start-btn" type="button" class="btn btn-outline-primary">Start the server</button>
+      <button id="show-maps-btn" type="button" class="btn btn-outline-primary">Show all maps</button>
+      <button id="runwave-btn" type="button" class="btn btn-outline-primary">Runwave</button>
+      <button id="run10wave-btn" type="button" class="btn btn-outline-danger">Run 10 waves</button>
+      <button id="pause-btn" type="button" class="btn btn-outline-primary">Game pause</button>
+      <button id="upload-map-btn" type="button" class="btn btn-outline-secondary">Upload maps</button>
+      <button id="stop-btn" type="button" class="btn btn-outline-primary">Stop the server</button>
+      <button id="gameover-btn" type="button" class="btn btn-danger">Gameover</button>
+    </div>
+    <br>
+    <div class="input-group mb-3">
+      <span class="input-group-text">Custom command</span>
+      <input type="text" id="custom-command" class="form-control">
+      <button class="btn btn-outline-secondary" id="send-custom-btn">Submit</button>
+    </div>
+    <br>
+    <div class="terminal container">
+      <p id="commandline-output"></p>
+    </div>
   </div>
 </body>
 

@@ -1,0 +1,15 @@
+.terminal {
+    background-color: rgb(43, 51, 59);
+    color: rgb(232, 240, 248);
+    font-family: monospace;
+    border-radius: 16px;
+}
+
+#commandline-output {
+    margin: 6px;
+    padding: 6px;
+}
+
+#main-div {
+    padding: 16px;
+}

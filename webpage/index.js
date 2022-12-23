@@ -87,11 +87,13 @@ function updateCommandlineOutput(forceUpdate) {
 }
 
 function sendCommand(cmd) {
-    fetch("/api/post/send_command", {
-        method: "POST", body: JSON.stringify({ command: cmd }), headers: new Headers({
-            "Content-Type": "application/json"
-        })
-    });
+    if (cmd) {
+        fetch("/api/post/send_command", {
+            method: "POST", body: JSON.stringify({ command: cmd }), headers: new Headers({
+                "Content-Type": "application/json"
+            })
+        });
+    }
 }
 
 function uploadMap() {
