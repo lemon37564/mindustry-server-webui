@@ -50,6 +50,10 @@ function start() {
         }
     );
 
+    document.getElementById("restart-btn").addEventListener("click",
+        () => fetch("/api/post/pull_new_version_restart", { method: "POST" })
+    );
+
     let commandInput = document.getElementById("custom-command");
     let sendCommandBtn = document.getElementById("send-custom-btn");
     commandInput.addEventListener("keyup",
