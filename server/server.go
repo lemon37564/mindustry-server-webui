@@ -31,13 +31,16 @@ func (server Server) Serve() {
 	server.handleSigInt()
 	server.app.Static("/", "./webpage")
 
-	server.app.Post("/api/post/kill_server", func(c *fiber.Ctx) error {
+	server.app.Post("/api/post/force_restart_server", func(c *fiber.Ctx) error {
 		if err := server.mindustry.Kill(); err != nil {
 			log.Println("Error when killing server:", err)
 			return err
 		}
-		log.Println("[Info] Server killed")
+		log.Println("[Info] Server killed, restarting")
 		server.mindustry = mindustryserver.NewMindustryServer()
+		if err := server.mindustry.Start(); err != nil {
+			log.Fatal("Error when starting server:", err)
+		}
 		return nil
 	})
 	server.app.Post("/api/post/upload_new_map/:filename", func(c *fiber.Ctx) error {

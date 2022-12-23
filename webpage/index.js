@@ -43,7 +43,7 @@ function start() {
 
     document.getElementById("kill-btn").addEventListener("click",
         () => {
-            fetch("/api/post/kill_server", { method: "POST" })
+            fetch("/api/post/force_restart_server", { method: "POST" })
                 .then(() => { document.getElementById("commandline-output").innerHTML = ""; });
         }
     );
