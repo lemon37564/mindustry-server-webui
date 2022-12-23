@@ -93,6 +93,9 @@ func (server *MindustryServer) Exit() (err error) {
 }
 
 func (server *MindustryServer) Kill() (err error) {
+	if server.cmd == nil {
+		return nil
+	}
 	server.running = false
 	err = server.cmd.Process.Kill()
 	return err

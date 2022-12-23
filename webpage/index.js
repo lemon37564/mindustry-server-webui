@@ -77,7 +77,15 @@ function start() {
 }
 
 function establishWebsocketConnection() {
-    wsClient = new WebSocket("ws://140.118.184.219:8086/ws/mindustry_server");
+    let loc = window.location, ws_uri;
+    if (loc.protocol === "https:") {
+        ws_uri = "wss:";
+    } else {
+        ws_uri = "ws:";
+    }
+    ws_uri += "//" + loc.host;
+    ws_uri += loc.pathname + "ws/mindustry_server";
+    wsClient = new WebSocket(ws_uri);
     wsClient.onmessage = onWsMessage;
 }
 
