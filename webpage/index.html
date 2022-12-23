@@ -2,9 +2,9 @@
 <html lang="zh-TW">
 
 <head>
-  <link rel="stylesheet" href="bootstrap-5.2.3-dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="mdbootstrap5/mdb.min.css">
   <link rel="stylesheet" href="index.css">
-  <script src="bootstrap-5.2.3-dist/js/bootstrap.bundle.min.js"></script>
+  <script src="mdbootstrap5/mdb.min.js"></script>
   <script src="index.js"></script>
   <title>Mindustry Webpage</title>
 </head>
@@ -12,20 +12,20 @@
 <body>
   <div class="container-fluid" id="main-div">
     <div class="d-grid gap-2 d-md-block">
-      <button id="start-btn" type="button" class="btn btn-outline-primary">Start the server</button>
-      <button id="show-maps-btn" type="button" class="btn btn-outline-primary">Show all maps</button>
-      <button id="upload-map-btn" type="button" class="btn btn-outline-secondary">Upload maps</button>
-      <button id="pause-btn" type="button" class="btn btn-outline-primary">Pause the game</button>
-      <button id="runwave-btn" type="button" class="btn btn-outline-primary">Runwave</button>
-      <button id="run10wave-btn" type="button" class="btn btn-outline-warning">Run 10 waves</button>
-      <button id="stop-btn" type="button" class="btn btn-outline-warning">Stop the server</button>
-      <button id="gameover-btn" type="button" class="btn btn-outline-danger">Gameover</button>
+      <button id="start-btn" type="button" class="btn btn-primary">Start the server</button>
+      <button id="show-maps-btn" type="button" class="btn btn-primary">Show all maps</button>
+      <button id="pause-btn" type="button" class="btn btn-primary">Pause the game</button>
+      <button id="runwave-btn" type="button" class="btn btn-primary">Runwave</button>
+      <button id="run10wave-btn" type="button" class="btn btn-warning">Run 10 waves</button>
+      <button id="upload-map-btn" type="button" class="btn btn-info">Upload map(s)</button>
+      <button id="stop-btn" type="button" class="btn btn-warning">Stop the server</button>
+      <button id="gameover-btn" type="button" class="btn btn-danger">Gameover</button>
     </div>
     <br>
     <div class="input-group mb-3">
       <span class="input-group-text">Command</span>
       <input type="text" id="custom-command" class="form-control">
-      <button class="btn btn-outline-secondary" id="send-custom-btn">Send</button>
+      <button class="btn btn-info" id="send-custom-btn">Send</button>
     </div>
     <br>
     <div class="terminal container-fluid">
