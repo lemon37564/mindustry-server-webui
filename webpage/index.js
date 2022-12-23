@@ -32,7 +32,7 @@ function start() {
     let btn = document.getElementById("pause-btn");
     btn.addEventListener("click",
         () => {
-            if (btn.innerHTML == "Pause the game") {
+            if (btn.innerHTML.toLocaleLowerCase() == "pause the game") {
                 btn.innerHTML = "Resume the game";
                 sendCommand("pause on");
             } else {
