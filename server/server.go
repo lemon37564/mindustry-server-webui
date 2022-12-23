@@ -64,11 +64,14 @@ func (server Server) Serve() {
 	})
 
 	server.app.Post("/api/post/pull_new_version_restart", func(c *fiber.Ctx) error {
+		server.mindustry.Kill()
+
 		cmd := exec.Command("git", "pull")
 		cmd.Run() // wait pull complete
 		log.Println("git pull finished, exiting...")
 		cmd = exec.Command("go", "run", "mindserver")
 		cmd.Start() // create new process and leave
+
 		os.Exit(0)
 		panic("unreachable")
 	})
