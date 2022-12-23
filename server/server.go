@@ -28,7 +28,7 @@ func New() Server {
 }
 
 func (server Server) Serve() {
-	server.hanleSigInt()
+	server.handleSigInt()
 	server.app.Static("/", "./webpage")
 
 	if err := server.mindustry.Start(); err != nil {
@@ -115,7 +115,7 @@ func (server Server) Serve() {
 	log.Fatal(server.app.Listen(":8086"))
 }
 
-func (server Server) hanleSigInt() {
+func (server Server) handleSigInt() {
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt)
 	go func() {
