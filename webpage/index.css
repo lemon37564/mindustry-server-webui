@@ -9,8 +9,20 @@
     font-size: smaller;
     margin: 6px;
     padding: 6px;
-    min-height: 240px;
+    height: 360px;
+    overflow: scroll;
+    overflow-x: hidden;
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
 }
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+#commandline-output::-webkit-scrollbar {
+    display: none;
+}
+
 
 #main-div {
     padding: 16px;

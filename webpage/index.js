@@ -1,4 +1,6 @@
-let interval;
+let terminal_emu;
+let wsClient;
+const MAX_LINE = 1000;
 
 function start() {
     document.getElementById("start-btn").addEventListener("click",
@@ -21,7 +23,7 @@ function start() {
     document.getElementById("run10wave-btn").addEventListener("click",
         () => {
             for (let i = 0; i < 10; i++) {
-                setTimeout(() => sendCommand("runwave"), 100 * i);
+                setTimeout(() => sendCommand("runwave"), 50 * i);
             }
         }
     );
@@ -70,40 +72,39 @@ function start() {
         }
     );
 
-    interval = setInterval(() => { updateCommandlineOutput(false) }, 300);
-    updateCommandlineOutput(true);
+    establishWebsocketConnection();
+    terminal_emu = document.getElementById("commandline-output");
 }
 
-function updateCommandlineOutput(forceUpdate) {
-    let request = new XMLHttpRequest();
-    if (forceUpdate) {
-        request.open("GET", "/api/get/commandline_output?force_update=true");
-    } else {
-        request.open("GET", "/api/get/commandline_output");
+function establishWebsocketConnection() {
+    wsClient = new WebSocket("ws://140.118.184.219:8086/ws/mindustry_server");
+    wsClient.onmessage = onWsMessage;
+}
+
+function onWsMessage(event) {
+    let data = event.data;
+    data = data.replaceAll("\n", "<br>");
+    terminal_emu.innerHTML += data;
+    terminal_emu.scrollTo(0, terminal_emu.scrollHeight);
+
+    // strip overflow 
+    let data_arr = terminal_emu.innerHTML.split("<br>");
+    if (data_arr.length > MAX_LINE) {
+        data_arr = data_arr.slice(data_arr.length - MAX_LINE, data_arr.length);
+        terminal_emu.innerHTML = data_arr.join("<br>");
     }
-    request.onload = () => {
-        if (request.status == 200) {
-            // ok
-            let response = request.response;
-            response = response.replaceAll("\n", "<br>");
-            document.getElementById("commandline-output").innerHTML = response;
-        } else if (request.status == 304) {
-            // not modified
-            return;
-        } else {
-            // TODO: deal with some error
-        }
-    }
-    request.send();
 }
 
 function sendCommand(cmd) {
     if (cmd) {
-        fetch("/api/post/send_command", {
-            method: "POST", body: JSON.stringify({ command: cmd }), headers: new Headers({
-                "Content-Type": "application/json"
-            })
-        });
+        if (wsClient.readyState == wsClient.CLOSED) {
+            console.log("Reconnecting")
+            establishWebsocketConnection();
+            // wait until websocket connected
+            setTimeout(() => wsClient.send(cmd), 200);
+        } else {
+            wsClient.send(cmd);
+        }
     }
 }
 

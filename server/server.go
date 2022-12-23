@@ -3,62 +3,51 @@ package server
 import (
 	"log"
 	"mindserver/server/mindustryserver"
-	"net/http"
 	"os"
 	"os/exec"
+	"os/signal"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/websocket/v2"
 )
+
+type Server struct {
+	mindustry *mindustryserver.MindustryServer
+	app       *fiber.App
+}
 
 type Command struct {
 	Cmd string `json:"command" xml:"command" form:"command"`
 }
 
-func Serve() {
-	mindustryServer := mindustryserver.NewMindustryServer()
+func New() Server {
+	server := *new(Server)
+	server.mindustry = mindustryserver.NewMindustryServer()
+	server.app = fiber.New()
+	return server
+}
 
-	app := fiber.New()
+func (server Server) Serve() {
+	server.hanleSigInt()
+	server.app.Static("/", "./webpage")
 
-	app.Static("/", "./webpage")
-
-	app.Post("/api/post/start_server", func(c *fiber.Ctx) error {
-		if err := mindustryServer.Start(); err != nil {
+	server.app.Post("/api/post/start_server", func(c *fiber.Ctx) error {
+		if err := server.mindustry.Start(); err != nil {
 			log.Println("Error when starting server:", err)
 			return err
 		}
 		return nil
 	})
-	app.Post("/api/post/kill_server", func(c *fiber.Ctx) error {
-		if err := mindustryServer.Kill(); err != nil {
+	server.app.Post("/api/post/kill_server", func(c *fiber.Ctx) error {
+		if err := server.mindustry.Kill(); err != nil {
 			log.Println("Error when killing server:", err)
 			return err
 		}
 		log.Println("[Info] Server killed")
-		mindustryServer = mindustryserver.NewMindustryServer()
+		server.mindustry = mindustryserver.NewMindustryServer()
 		return nil
 	})
-	app.Post("/api/post/send_command", func(c *fiber.Ctx) error {
-		cmd := new(Command)
-		if err := c.BodyParser(cmd); err != nil {
-			log.Println("Error in parsing body:", err)
-			return err
-		}
-		if err := mindustryServer.SendCommand(cmd.Cmd); err != nil {
-			log.Println("Error in sending command:", err)
-			return err
-		}
-		return nil
-	})
-	app.Get("/api/get/commandline_output", func(c *fiber.Ctx) error {
-		// update when output updated or the force_update is set to true
-		if mindustryServer.IsOutputUpdated() || c.Query("force_update") == "true" {
-			output := mindustryServer.GetOutput()
-			return c.SendString(string(output))
-		}
-		// the result is not changed, use the cached result
-		return c.SendStatus(http.StatusNotModified)
-	})
-	app.Post("/api/post/upload_new_map/:filename", func(c *fiber.Ctx) error {
+	server.app.Post("/api/post/upload_new_map/:filename", func(c *fiber.Ctx) error {
 		c.Accepts("application/octet-stream")
 		f, err := os.Create("config/maps/" + c.Params("filename"))
 		if err != nil {
@@ -74,7 +63,7 @@ func Serve() {
 		return nil
 	})
 
-	app.Post("/api/post/pull_new_version_restart", func(c *fiber.Ctx) error {
+	server.app.Post("/api/post/pull_new_version_restart", func(c *fiber.Ctx) error {
 		cmd := exec.Command("git", "pull")
 		cmd.Run() // wait pull complete
 		log.Println("git pull finished, exiting...")
@@ -84,5 +73,53 @@ func Serve() {
 		panic("unreachable")
 	})
 
-	log.Fatal(app.Listen(":8086"))
+	server.app.Get("/ws/mindustry_server", websocket.New(func(c *websocket.Conn) {
+		closed := false
+		// handle websocket closed
+		// should have better way to handle this
+		c.SetCloseHandler(func(code int, text string) error {
+			closed = true
+			if code == websocket.CloseNormalClosure {
+				log.Println("Websocket connection closed")
+			}
+			return nil
+		})
+		go func() {
+			for {
+				msg := <-server.mindustry.GetOutputChannel()
+				// close goroutine if connection closed
+				if closed {
+					return
+				}
+				err := c.WriteMessage(websocket.TextMessage, msg)
+				if err != nil {
+					log.Println("Websocket write:", err)
+				}
+			}
+		}()
+		for {
+			_, msg, err := c.ReadMessage()
+			if err != nil {
+				log.Println("Websocket read:", err)
+				break
+			}
+			log.Printf("Websocket recv: %s", msg)
+			server.mindustry.SendCommand(string(msg))
+		}
+	}))
+
+	log.Fatal(server.app.Listen(":8086"))
+}
+
+func (server Server) hanleSigInt() {
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt)
+	go func() {
+		sig := <-c
+		log.Println("Recived signal", sig)
+		log.Println("Killing mindustry server")
+		server.mindustry.Kill()
+		log.Println("Exiting")
+		os.Exit(0)
+	}()
 }
