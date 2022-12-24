@@ -43,7 +43,7 @@ function start() {
 
     document.getElementById("kill-btn").addEventListener("click",
         () => {
-            fetch("/api/post/force_restart_server", { method: "POST" })
+            fetch("/mindustry/api/post/force_restart_server", { method: "POST" })
                 .then(() => { document.getElementById("commandline-output").innerHTML = ""; });
         }
     );
@@ -83,7 +83,7 @@ function establishWebsocketConnection() {
         ws_uri = "ws:";
     }
     ws_uri += "//" + loc.host;
-    ws_uri += loc.pathname + "ws/mindustry_server";
+    ws_uri += loc.pathname + "/ws/server";
     wsClient = new WebSocket(ws_uri);
     wsClient.onmessage = onWsMessage;
 }
@@ -133,7 +133,7 @@ function uploadMap() {
 
                 reader.readAsArrayBuffer(uploadFile);
                 reader.onload = function (e) {
-                    fetch("/api/post/upload_new_map/" + filename, {
+                    fetch("/mindustry/api/post/upload_new_map/" + filename, {
                         method: "POST", body: this.result, headers: new Headers({
                             "Content-Type": "application/octet-stream"
                         })

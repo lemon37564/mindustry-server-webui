@@ -31,10 +31,10 @@ func New(app *fiber.App) *Server {
 func (server Server) Route() {
 	server.handleSigInt()
 
-	server.app.Post("/api/post/force_restart_server", server.forceRestartServer)
-	server.app.Post("/api/post/upload_new_map/:filename", server.uploadNewMap)
+	server.app.Post("/mindustry/api/post/force_restart_server", server.forceRestartServer)
+	server.app.Post("/mindustry/api/post/upload_new_map/:filename", server.uploadNewMap)
 
-	server.app.Get("/ws/mindustry_server", websocket.New(server.websocketConn))
+	server.app.Get("/mindustry/ws/server", websocket.New(server.websocketConn))
 }
 
 func (server Server) Kill() {
