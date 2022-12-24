@@ -75,11 +75,8 @@ func (server Server) Serve() {
 	server.app.Get("/ws/mindustry_server", websocket.New(func(c *websocket.Conn) {
 		channel := make(chan []byte)
 		server.mindustry.AppendOutputChannel(channel)
-		closed := false
-		// handle websocket closed
-		// should have better way to handle this
+		// handle websocket closed, close the channel
 		c.SetCloseHandler(func(code int, text string) error {
-			closed = true
 			server.mindustry.RemoveOutputChannel(channel)
 			close(channel)
 			if code == websocket.CloseNormalClosure {
@@ -90,9 +87,9 @@ func (server Server) Serve() {
 		// send message to client (when message is sent to channel)
 		go func() {
 			for {
-				msg := <-channel
-				// close goroutine if connection closed
-				if closed {
+				msg, ok := <-channel
+				// close goroutine if channel is being closed
+				if !ok {
 					return
 				}
 				err := c.WriteMessage(websocket.TextMessage, msg)
