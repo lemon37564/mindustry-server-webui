@@ -5,62 +5,19 @@ import (
 	"mindserver/server/mindustryserver"
 	"os"
 	"os/exec"
-	"os/signal"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/websocket/v2"
 )
 
-type Server struct {
-	mindustry *mindustryserver.MindustryServer
-	app       *fiber.App
-}
+func Serve() {
+	app := fiber.New()
+	app.Static("/", "./webpage")
 
-type Command struct {
-	Cmd string `json:"command" xml:"command" form:"command"`
-}
+	minServer := mindustryserver.New(app)
+	minServer.Route()
 
-func New() Server {
-	server := *new(Server)
-	server.mindustry = mindustryserver.NewMindustryServer()
-	server.app = fiber.New()
-	return server
-}
-
-func (server Server) Serve() {
-	server.handleSigInt()
-	server.app.Static("/", "./webpage")
-
-	server.app.Post("/api/post/force_restart_server", func(c *fiber.Ctx) error {
-		if err := server.mindustry.Kill(); err != nil {
-			log.Println("Error when killing server:", err)
-			return err
-		}
-		log.Println("[Info] Server killed, restarting")
-		server.mindustry = mindustryserver.NewMindustryServer()
-		if err := server.mindustry.Start(); err != nil {
-			log.Fatal("Error when starting server:", err)
-		}
-		return nil
-	})
-	server.app.Post("/api/post/upload_new_map/:filename", func(c *fiber.Ctx) error {
-		c.Accepts("application/octet-stream")
-		f, err := os.Create("config/maps/" + c.Params("filename"))
-		if err != nil {
-			log.Println("Error when creating file:", err)
-			return err
-		}
-		_, err = f.Write(c.Body())
-		if err != nil {
-			log.Println("Error when writing file:", err)
-			return err
-		}
-		log.Println("Upload new map:", c.Params("filename"))
-		return nil
-	})
-
-	server.app.Post("/api/post/pull_new_version_restart", func(c *fiber.Ctx) error {
-		server.mindustry.Kill()
+	app.Post("/api/post/pull_new_version_restart", func(c *fiber.Ctx) error {
+		minServer.Kill()
 
 		cmd := exec.Command("git", "pull")
 		cmd.Run() // wait pull complete
@@ -72,59 +29,5 @@ func (server Server) Serve() {
 		panic("unreachable")
 	})
 
-	server.app.Get("/ws/mindustry_server", websocket.New(func(c *websocket.Conn) {
-		channel := make(chan []byte)
-		server.mindustry.AppendOutputChannel(channel)
-		// handle websocket closed, close the channel
-		c.SetCloseHandler(func(code int, text string) error {
-			server.mindustry.RemoveOutputChannel(channel)
-			close(channel)
-			if code == websocket.CloseNormalClosure {
-				log.Println("Websocket connection closed")
-			}
-			return nil
-		})
-		// send message to client (when message is sent to channel)
-		go func() {
-			for {
-				msg, ok := <-channel
-				// close goroutine if channel is being closed
-				if !ok {
-					return
-				}
-				err := c.WriteMessage(websocket.TextMessage, msg)
-				if err != nil {
-					log.Println("Websocket write:", err)
-				}
-			}
-		}()
-		// receive message from client
-		for {
-			_, msg, err := c.ReadMessage()
-			if err != nil {
-				log.Println("Websocket read:", err)
-				break
-			}
-			log.Printf("Websocket recv: %s", msg)
-			server.mindustry.SendCommand(string(msg))
-		}
-	}))
-
-	if err := server.mindustry.Start(); err != nil {
-		log.Fatal("Error when starting server:", err)
-	}
-	log.Fatal(server.app.Listen(":8086"))
-}
-
-func (server Server) handleSigInt() {
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt)
-	go func() {
-		sig := <-c
-		log.Println("Recived signal", sig)
-		log.Println("Killing mindustry server")
-		server.mindustry.Kill()
-		log.Println("Exiting")
-		os.Exit(0)
-	}()
+	log.Fatal(app.Listen(":8086"))
 }

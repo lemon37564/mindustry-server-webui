@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-type MindustryServer struct {
+type mindustryBridge struct {
 	cmd     *exec.Cmd
 	running bool
 	inPipe  io.WriteCloser
@@ -20,8 +20,8 @@ type MindustryServer struct {
 	outputChannels map[chan []byte]struct{}
 }
 
-func NewMindustryServer() *MindustryServer {
-	server := new(MindustryServer)
+func newMindustryServer() *mindustryBridge {
+	server := new(mindustryBridge)
 
 	server.cmd = exec.Command("java", "-jar", "./mindustry-server/server.jar")
 	server.running = false
@@ -35,7 +35,7 @@ func NewMindustryServer() *MindustryServer {
 // something like \033[101m    , use this to delete all the color code to make it plain text
 var colorCodeReplace = regexp.MustCompile("\033" + regexp.QuoteMeta("[") + "[0-9]+m")
 
-func (server *MindustryServer) Start() (err error) {
+func (server *mindustryBridge) start() (err error) {
 	if server.running {
 		return
 	}
@@ -75,32 +75,32 @@ func (server *MindustryServer) Start() (err error) {
 	return nil
 }
 
-func (server *MindustryServer) SendCommand(command string) (err error) {
+func (server *mindustryBridge) sendCommand(command string) (err error) {
 	_, err = server.inPipe.Write([]byte(command + "\n"))
 	return err
 }
 
-func (server *MindustryServer) AppendOutputChannel(ch chan []byte) {
+func (server *mindustryBridge) appendOutputChannel(ch chan []byte) {
 	server.outputChannels[ch] = struct{}{}
 }
 
-func (server *MindustryServer) RemoveOutputChannel(ch chan []byte) {
+func (server *mindustryBridge) RemoveOutputChannel(ch chan []byte) {
 	delete(server.outputChannels, ch)
 }
 
-func (server *MindustryServer) Exit() (err error) {
-	err = server.SendCommand("stop")
+func (server *mindustryBridge) exit() (err error) {
+	err = server.sendCommand("stop")
 	if err != nil {
 		return err
 	}
-	err = server.SendCommand("exit")
+	err = server.sendCommand("exit")
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (server *MindustryServer) Kill() (err error) {
+func (server *mindustryBridge) kill() (err error) {
 	if server.cmd == nil {
 		return nil
 	}
