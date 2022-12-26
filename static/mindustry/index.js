@@ -48,10 +48,6 @@ function start() {
         }
     );
 
-    document.getElementById("restart-btn").addEventListener("click",
-        () => fetch("/api/post/pull_new_version_restart", { method: "POST" })
-    );
-
     let commandInput = document.getElementById("custom-command");
     let sendCommandBtn = document.getElementById("send-custom-btn");
     // send command when press enter, and clear the input box
@@ -83,7 +79,7 @@ function establishWebsocketConnection() {
         ws_uri = "ws:";
     }
     ws_uri += "//" + loc.host;
-    ws_uri += loc.pathname + "/ws/server";
+    ws_uri += loc.pathname + "ws";
     wsClient = new WebSocket(ws_uri);
     wsClient.onmessage = onWsMessage;
 }
@@ -129,21 +125,18 @@ function uploadMap() {
                 let filename = uploadFile.name;
                 filename = filename.replace(/.*[\/\\]/, '');
 
-                let reader = new FileReader();
+                let formData = new FormData();
+                formData.append("filename", filename);
+                formData.append("file", uploadFile);
 
-                reader.readAsArrayBuffer(uploadFile);
-                reader.onload = function (e) {
-                    fetch("/mindustry/api/post/upload_new_map/" + filename, {
-                        method: "POST", body: this.result, headers: new Headers({
-                            "Content-Type": "application/octet-stream"
-                        })
-                    }).then(() => {
-                        // when the final one was uploaded, reloadmaps
-                        if (i == input.files.length - 1) {
-                            setTimeout(() => sendCommand("reloadmaps"), 150);
-                        }
-                    });
-                };
+                fetch("/mindustry/map/" + filename, {
+                    method: "POST", body: formData
+                }).then(() => {
+                    // when the final one was uploaded, reloadmaps
+                    if (i == input.files.length - 1) {
+                        setTimeout(() => sendCommand("reloadmaps"), 150);
+                    }
+                });
             }
         }
     };

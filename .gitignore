@@ -1,3 +1,5 @@
-config/*
+config/
 *.log
 *.bin
+lemonserver
+server.log

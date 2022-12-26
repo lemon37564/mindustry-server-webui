@@ -1,10 +1,9 @@
-package mindustryserver
+package mindustrybridge
 
 import (
 	"bufio"
-	"fmt"
 	"io"
-	"log"
+	"mindserver/log"
 	"os/exec"
 	"regexp"
 	"time"
@@ -23,7 +22,10 @@ type mindustryBridge struct {
 func newMindustryServer() *mindustryBridge {
 	server := new(mindustryBridge)
 
-	server.cmd = exec.Command("java", "-jar", "./mindustry-server/server.jar")
+	cmd := exec.Command("java", "-jar", "server.jar")
+	cmd.Dir = "./mindustrybridge/mindustry-server"
+
+	server.cmd = cmd
 	server.running = false
 	server.inPipe, _ = server.cmd.StdinPipe()
 	server.outPipe, _ = server.cmd.StdoutPipe()
@@ -58,12 +60,12 @@ func (server *mindustryBridge) start() (err error) {
 					time.Sleep(time.Millisecond * 500)
 					continue
 				}
-				log.Println("Error reading stdout from mindustry:", err)
+				log.Named("Mindustry").Error("Error reading stdout from mindustry:" + err.Error())
 			}
 
 			// also print output to stdout
-			fmt.Println(string(line))
 			line = colorCodeReplace.ReplaceAll(line, []byte(""))
+			log.Named("Mindustry").Info(string(line))
 			line = append(line, byte('\n'))
 
 			for ch := range server.outputChannels {
